@@ -7,18 +7,44 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
   <style>
-    body { background-color: #f8f9fa; }
-    .container { max-width: 600px; margin-top: 50px; }
-    h1 { color: #6f42c1; font-weight: bold; }
-    .form-label { font-weight: bold; }
-    .btn-primary { background-color: #6f42c1; border: none; }
-    .btn-primary:hover { background-color: #5a32a3; }
-    .form-check-label { margin-left: 5px; }
-    .loading { display: none; font-size: 1.2em; color: #6f42c1; }
-    .enderecoGroup { display: none; }
-    .pedido { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
-    .error { color: red; font-size: 0.9em; }
-    .pix-copy { cursor: pointer; color: #6f42c1; text-decoration: underline; }
+    body {
+      background-color: #f8f9fa;
+    }
+    .container {
+      max-width: 600px;
+      margin-top: 50px;
+    }
+    h1 {
+      color: #6f42c1;
+      font-weight: bold;
+    }
+    .form-label {
+      font-weight: bold;
+    }
+    .btn-primary {
+      background-color: #6f42c1;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #5a32a3;
+    }
+    .form-check-label {
+      margin-left: 5px;
+    }
+    .loading {
+      display: none;
+      font-size: 1.2em;
+      color: #6f42c1;
+    }
+    #enderecoGroup {
+      display: none; /* Inicialmente oculto */
+    }
+    .pedido {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
@@ -34,17 +60,17 @@
             <label for="tamanho" class="form-label">Tamanho do Açaí</label>
             <select class="form-select" name="tamanho" required>
               <option value="" disabled selected>Selecione o tamanho</option>
-              <option value="180ml - R$ 8,50">180ml - R$ 8,50 (3 acompanhamentos)</option>
-              <option value="250ml - R$ 14,50">250ml - R$ 14,50 (3 acompanhamentos)</option>
-              <option value="300ml - R$ 16,00">300ml - R$ 16,00 (4 acompanhamentos)</option>
-              <option value="500ml - R$ 21,00">500ml - R$ 21,00 (5 acompanhamentos)</option>
-              <option value="700ml - R$ 25,00">700ml - R$ 25,00 (6 acompanhamentos)</option>
+              <option value="180ml">180ml - R$ 8,50 (3 acompanhamentos)</option>
+              <option value="250ml">250ml - R$ 14,50 (3 acompanhamentos)</option>
+              <option value="300ml">300ml - R$ 16,00 (4 acompanhamentos)</option>
+              <option value="500ml">500ml - R$ 21,00 (5 acompanhamentos)</option>
+              <option value="700ml">700ml - R$ 25,00 (6 acompanhamentos)</option>
             </select>
           </div>
 
           <!-- Acompanhamentos -->
           <div class="mb-3">
-            <label class="form-label">Acompanhamentos (R$ 2,00 por adicional)</label>
+            <label class="form-label">Acompanhamentos</label>
             <div class="form-check">
               <input class="form-check-input" type="checkbox" value="Banana" name="acompanhamentos">
               <label class="form-check-label">Banana</label>
@@ -129,7 +155,6 @@
               <input class="form-check-input" type="checkbox" value="Creme de Avelã (+R$ 6,00)" name="acompanhamentos">
               <label class="form-check-label">Creme de Avelã (+R$ 6,00)</label>
             </div>
-            <div class="error" id="acompanhamentosError"></div>
           </div>
 
           <!-- Tipo de Pedido (Entrega ou Retirada) -->
@@ -149,34 +174,6 @@
           <div class="mb-3 enderecoGroup">
             <label for="endereco" class="form-label">Endereço de Entrega</label>
             <input type="text" class="form-control" name="endereco" placeholder="Rua, Número, Bairro">
-          </div>
-
-          <!-- Meio de Pagamento -->
-          <div class="mb-3">
-            <label class="form-label">Meio de Pagamento</label>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="pagamento" value="PIX (36994924000106)" checked>
-              <label class="form-check-label">PIX (36994924000106)</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="pagamento" value="Débito/Crédito">
-              <label class="form-check-label">Débito/Crédito</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="pagamento" value="Dinheiro">
-              <label class="form-check-label">Dinheiro</label>
-            </div>
-          </div>
-
-          <!-- Campo para copiar a chave PIX -->
-          <div class="mb-3" id="pixCopyGroup">
-            <label class="form-label">Chave PIX:</label>
-            <div class="input-group">
-              <input type="text" class="form-control" id="pixKey" value="36994924000106" readonly>
-              <button class="btn btn-outline-secondary" type="button" id="copyPixButton">
-                <i class="fas fa-copy"></i> Copiar
-              </button>
-            </div>
           </div>
         </form>
       </div>
@@ -220,14 +217,6 @@
       }
     });
 
-    // Função para copiar a chave PIX
-    document.getElementById('copyPixButton').addEventListener('click', function () {
-      const pixKey = document.getElementById('pixKey');
-      pixKey.select();
-      document.execCommand('copy');
-      alert('Chave PIX copiada: 36994924000106');
-    });
-
     // Envio do formulário
     document.getElementById('enviarPedidos').addEventListener('click', function () {
       // Mostra o feedback de carregamento
@@ -236,59 +225,21 @@
       // Captura todos os pedidos
       const pedidos = document.querySelectorAll('.pedidoForm');
       let mensagem = 'Olá, gostaria de fazer os seguintes pedidos no *W S Açaí Gourmet*:\n\n';
-      let total = 0;
 
       pedidos.forEach((pedido, index) => {
         const tamanho = pedido.querySelector('select[name="tamanho"]').value;
         const acompanhamentos = Array.from(pedido.querySelectorAll('input[name="acompanhamentos"]:checked'))
-          .map(checkbox => checkbox.value);
+          .map(checkbox => checkbox.value)
+          .join(', ');
         const tipoPedido = pedido.querySelector('input[name="tipoPedido"]:checked').value;
         const endereco = tipoPedido === 'Entrega' ? pedido.querySelector('input[name="endereco"]').value : 'Retirada no Local';
-        const pagamento = pedido.querySelector('input[name="pagamento"]:checked').value;
 
-        // Extrai o valor do tamanho
-        const valorBase = parseFloat(tamanho.split('R$ ')[1].replace(',', '.'));
-
-        // Define o número máximo de acompanhamentos incluídos
-        let maxAcompanhamentos;
-        if (tamanho.includes("180ml") || tamanho.includes("250ml")) {
-          maxAcompanhamentos = 3;
-        } else if (tamanho.includes("300ml")) {
-          maxAcompanhamentos = 4;
-        } else if (tamanho.includes("500ml")) {
-          maxAcompanhamentos = 5;
-        } else if (tamanho.includes("700ml")) {
-          maxAcompanhamentos = 6;
-        }
-
-        // Calcula o número de acompanhamentos adicionais
-        const numAcompanhamentos = acompanhamentos.length;
-        const acompanhamentosAdicionais = Math.max(0, numAcompanhamentos - maxAcompanhamentos);
-        const valorAcompanhamentosAdicionais = acompanhamentosAdicionais * 2.00;
-
-        // Verifica se há creme de avelã selecionado
-        const cremeDeAvela = acompanhamentos.includes('Creme de Avelã (+R$ 6,00)');
-        const valorCremeDeAvela = cremeDeAvela ? 6.00 : 0.00;
-
-        // Calcula o valor total do pedido
-        const valorPedido = valorBase + valorAcompanhamentosAdicionais + valorCremeDeAvela;
-        total += valorPedido;
-
-        // Monta a mensagem com os acompanhamentos listados um abaixo do outro
         mensagem += `*Pedido ${index + 1}:*\n` +
           `- Tamanho: ${tamanho}\n` +
-          `- Acompanhamentos:\n` +
-          acompanhamentos.map(acomp => `  • ${acomp}`).join('\n') + '\n' +
-          (acompanhamentosAdicionais > 0 ? `- Acompanhamentos adicionais: ${acompanhamentosAdicionais} (R$ ${valorAcompanhamentosAdicionais.toFixed(2)})\n` : '') +
-          (cremeDeAvela ? `- Creme de Avelã: R$ 6,00\n` : '') +
+          `- Acompanhamentos: ${acompanhamentos}\n` +
           `- Tipo de Pedido: ${tipoPedido}\n` +
-          (tipoPedido === 'Entrega' ? `- Endereço: ${endereco}\n` : '') +
-          `- Meio de Pagamento: ${pagamento}\n` +
-          `- Valor do Pedido: R$ ${valorPedido.toFixed(2)}\n\n`;
+          (tipoPedido === 'Entrega' ? `- Endereço: ${endereco}\n\n` : '\n');
       });
-
-      // Adiciona o total à mensagem
-      mensagem += `*Total: R$ ${total.toFixed(2)}*`;
 
       // Codifica a mensagem para URL
       const mensagemCodificada = encodeURIComponent(mensagem);
